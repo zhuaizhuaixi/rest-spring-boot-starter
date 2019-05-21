@@ -1,0 +1,50 @@
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: "maven-publish"
+
+group = 'com.zzx'
+version = '1.0.0-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+jar {
+    manifest {
+        attributes('Implementation-Title': project.name,
+                'Implementation-Version': project.version)
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        url "http://maven.aliyun.com/nexus/content/groups/public/"
+    }
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId 'com.zzx'
+            artifactId 'rest-spring-boot-starter'
+            version '1.0.0-SNAPSHOT'
+            from components.java
+            // more goes in here
+        }
+    }
+    repositories {
+        mavenLocal()
+    }
+}
+
+compileJava.dependsOn(processResources)
+
+tasks.withType(JavaCompile){
+    options.encoding = "UTF-8"
+}
+
+dependencies {
+    implementation ('org.springframework.boot:spring-boot-starter-web:2.0.5.RELEASE')
+
+    implementation 'org.springframework.boot:spring-boot-autoconfigure:2.0.5.RELEASE'
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor:2.0.5.RELEASE"
+}
